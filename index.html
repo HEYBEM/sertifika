@@ -43,14 +43,14 @@
         ctx.drawImage(img, 0, 0);
 
         // YAZI BOYUTU (Şablon genişliğinin %4.5'i)
-       const fontSize = 210;
+       const fontSize = 230;
 ctx.font = `bold ${fontSize}px "Times New Roman", serif`;
 ctx.fillStyle = '#1a1a1a';
 ctx.textAlign = 'center';
 ctx.textBaseline = 'middle';
         
-        // YAZI KONUMU: 0.522 dikey konum oranıdır
-        ctx.fillText(name, canvas.width / 2, canvas.height * 0.522);
+        // YAZI KONUMU: 0.533 dikey konum oranıdır
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.533);
 
         const link = document.createElement('a');
         link.download = `Sertifika_${name.replace(/\s+/g, '_')}.jpg`;
