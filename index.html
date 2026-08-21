@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sertifika Oluşturucu</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+    .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+    input[type="text"] { width: 100%; padding: 14px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+    button { width: 100%; padding: 14px; background: #007bff; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+    canvas { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Katılım Sertifikası</h2>
+    <p>Adınızı ve soyadınızı giriniz.</p>
+    <input type="text" id="nameInput" placeholder="Ad Soyad" autocomplete="off">
+    <button onclick="generateCertificate()">Sertifikamı İndir</button>
+  </div>
+  <canvas id="certCanvas"></canvas>
+  <script>
+    function generateCertificate() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) { 
+        alert('Lütfen adınızı giriniz.'); 
+        return; 
+      }
 
+      const canvas = document.getElementById('certCanvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      
+      img.onerror = function() {
+        alert('Görsel yüklenemedi! Dosya adının "sertifika-sablon.jpg" olduğundan emin olun.');
+      };
+
+      img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // YAZI BOYUTU (Şablon genişliğinin %4.5'i)
+        const fontSize = Math.floor(canvas.width * 0.045);
+        ctx.font = `bold ${fontSize}px Georgia, serif`;
+        ctx.fillStyle = '#1a1a1a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // YAZI KONUMU: 0.52 dikey konum oranıdır
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.52);
+
+        const link = document.createElement('a');
+        link.download = `Sertifika_${name.replace(/\s+/g, '_')}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+      };
+
+      img.src = 'sertifika-sablon.jpg?' + new Date().getTime();
+    }
+  </script>
+</body>
+</html>
